@@ -54,7 +54,7 @@ class VersionInfo {
 }
 
 function Get-DetectedCiVersion([switch] $Release) {
-    $versionPrefix = [version](XmlPeek 'src\Techsola.InstantReplay\Techsola.InstantReplay.csproj' '/Project/PropertyGroup/Version/text()')
+    $versionPrefix = [version](XmlPeek 'src\Instrumental.InstantReplay\Instrumental.InstantReplay.csproj' '/Project/PropertyGroup/Version/text()')
     $minVersionPrefix = Get-VersionPrefixFromTags
     if ($versionPrefix -lt $minVersionPrefix) { $versionPrefix = $minVersionPrefix }
 

@@ -18,9 +18,11 @@ jobs:
     - name: Build
       run: ./build.ps1
 
-    - name: Publish to MyGet
+    - name: Publish to Feedz
       if: github.ref == 'refs/heads/main'
-      run: dotnet nuget push artifacts\Packages\Techsola.InstantReplay.*.nupkg --source https://www.myget.org/F/techsola/api/v3/index.json --api-key ${{ secrets.MYGET_API_KEY }}
+      env:
+        FEEDZ_API_KEY: ${{ secrets.FEEDZ_API_KEY }}
+      run: dotnet nuget push artifacts\Packages\Instrumental.InstantReplay.*.nupkg --source https://f.feedz.io/jnm2/prerelease/nuget/index.json --api-key "$env:FEEDZ_API_KEY"
 
     - name: Upload packages artifact
       if: always()

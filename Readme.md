@@ -1,8 +1,11 @@
-# Techsola.InstantReplay [![MyGet badge](https://img.shields.io/myget/techsola/vpre/Techsola.InstantReplay.svg?label=myget)](https://www.myget.org/feed/techsola/package/nuget/Techsola.InstantReplay "MyGet (prereleases)") [![Build status badge](https://github.com/Techsola/InstantReplay/workflows/CI/badge.svg)](https://github.com/Techsola/InstantReplay/actions?query=workflow%3ACI "Build status")
+# Instrumental.InstantReplay [![Feedz badge](https://img.shields.io/feedz/vpre/jnm2/prerelease/Instrumental.InstantReplay)](https://feedz.io/portal/org/jnm2/repository/prerelease/packages "Feedz (prereleases)") [![Build status badge](https://github.com/jnm2/InstantReplay/workflows/CI/badge.svg)](https://github.com/jnm2/InstantReplay/actions?query=workflow%3ACI "Build status")
 
 [🔬 Currently experimental. More documentation will be added later.]
 
 Produces an animated GIF on demand of the last ten seconds of a Windows desktop app’s user interface. This can be useful to include in error reports or to help understand how an unusual situation came about.
+
+> [!NOTE]
+> The package, assembly, and namespace have been renamed from `Techsola.InstantReplay` to `Instrumental.InstantReplay`. When upgrading, replace the old package reference and update `using` directives. The prerelease feed has moved to Feedz; update your package source as shown in [Set up](#set-up).
 
 ### Goals
 
@@ -24,11 +27,11 @@ Produces an animated GIF on demand of the last ten seconds of a Windows desktop 
 
 While other integrations could happen in the future, right now this library only works with Windows desktop applications that have access to native Win32 APIs.
 
-| App model     | Supported |
-|---------------|-----------|
-| Windows Forms | ✔         |
-| WPF           | ✔         |
-| UWP           | ❌        |
+| App model | Supported |
+| --- | --- |
+| Windows Forms | ✔ |
+| WPF | ✔ |
+| UWP | ❌ |
 
 To continue fleshing out the list: support currently depends on whether the app is able to [invoke](https://docs.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) native Windows functions such as [`BitBlt`](https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-bitblt) and [`EnumWindows`](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-enumwindows).
 
@@ -44,14 +47,14 @@ Until this library is released to nuget.org, add this package source to a `nuget
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <packageSources>
-    <add key="Techsola prerelease" value="https://www.myget.org/F/techsola/api/v3/index.json" />
+    <add key="jnm2 prerelease" value="https://f.feedz.io/jnm2/prerelease/nuget/index.json" />
   </packageSources>
 </configuration>
 ```
 
-If your project was open in Visual Studio when you edited the `nuget.config` file, close the solution and reopen it. Then use the NuGet package manager to install the latest available version of the package `Techsola.InstantReplay` into your app’s startup project. Make sure that the ‘Include prerelease’ box is checked and the selected package source is ‘All.’
+If your project was open in Visual Studio when you edited the `nuget.config` file, close the solution and reopen it. Then use the NuGet package manager to install the latest available version of the package `Instrumental.InstantReplay` into your app’s startup project. Make sure that the ‘Include prerelease’ box is checked and the selected package source is ‘All.’
 
-Now that the package is added to your project, add a call to `InstantReplayCamera.Start();` before your app’s first window is shown. (The namespace to include is `Techsola.InstantReplay`.) This call only needs to be made once in the lifetime of the process. Subsequent calls are ignored.
+Now that the package is added to your project, add a call to `InstantReplayCamera.Start();` before your app’s first window is shown. (The namespace to include is `Instrumental.InstantReplay`.) This call only needs to be made once in the lifetime of the process. Subsequent calls are ignored.
 
 For a Windows Forms app, the ideal place for this call is in `Program.Main` before `Application.Run` is called.
 
@@ -61,14 +64,14 @@ Whenever you want a GIF of the last ten seconds of the app’s user interface, c
 
 ℹ Consider calling `InstantReplayCamera.SaveGif` on a non-UI thread using `Task.Run` due to the CPU-blocking work it takes to encode a GIF. This way the user interface doesn't pause for even a split second.
 
-## Debugging into Techsola.InstantReplay source
+## Debugging into Instrumental.InstantReplay source
 
-Stepping into Techsola.InstantReplay source code, pausing the debugger while execution is inside Techsola.InstantReplay code and seeing the source, and setting breakpoints in Techsola.InstantReplay all require loading symbols for Techsola.InstantReplay. To do this in Visual Studio:
+Stepping into Instrumental.InstantReplay source code, pausing the debugger while execution is inside Instrumental.InstantReplay code and seeing the source, and setting breakpoints in Instrumental.InstantReplay all require loading symbols for Instrumental.InstantReplay. To do this in Visual Studio:
 
 1. Go to Debug > Options, and uncheck ‘Enable Just My Code.’ (It’s a good idea to reenable this as soon as you’re finished with the task that requires debugging into a specific external library.)  
    ℹ *Before* doing this, because Visual Studio can become unresponsive when attempting to load symbols for absolutely everything, I recommend going to Debugging > Symbols within the Options window and selecting ‘Load only specified modules.’
 
-2. If you are using a prerelease version of Techsola.InstantReplay package, go to Debugging > Symbols within the Options window and add this as a new symbol location: `https://www.myget.org/F/techsola/api/v2/symbolpackage/`  
+2. If you are using a prerelease version of Instrumental.InstantReplay package, go to Debugging > Symbols within the Options window and add this as a new symbol location: `https://f.feedz.io/jnm2/prerelease/symbols`  
    If you are using a version that was released to nuget.org, enable the built-in ‘NuGet.org Symbol Server’ symbol location.
 
-3. If ‘Load only specified modules’ is selected in Options > Debugging > Symbols, you will have to explicitly tell Visual Studio to load symbols for Techsola.InstantReplay. One way to do this while debugging is to go to Debug > Windows > Modules and right-click on Techsola.InstantReplay. Select ‘Load Symbols’ if you only want to do it for the current debugging session. Select ‘Always Load Automatically’ if you want to load symbols now and also add the file name to a list so that Visual Studio loads Techsola.InstantReplay symbols in all future debug sessions when Just My Code is disabled.
+3. If ‘Load only specified modules’ is selected in Options > Debugging > Symbols, you will have to explicitly tell Visual Studio to load symbols for Instrumental.InstantReplay. One way to do this while debugging is to go to Debug > Windows > Modules and right-click on Instrumental.InstantReplay. Select ‘Load Symbols’ if you only want to do it for the current debugging session. Select ‘Always Load Automatically’ if you want to load symbols now and also add the file name to a list so that Visual Studio loads Instrumental.InstantReplay symbols in all future debug sessions when Just My Code is disabled.

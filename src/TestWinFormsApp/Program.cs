@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Techsola.InstantReplay;
+using Instrumental.InstantReplay;
 
 namespace TestWinFormsApp
 {
@@ -15,7 +15,7 @@ namespace TestWinFormsApp
             InstantReplayCamera.Start(
                 reportBackgroundException: ex => MessageBox.Show(
                     ex.ToString(),
-                    "Unhandled exception in Techsola.InstantReplay",
+                    "Unhandled exception in Instrumental.InstantReplay",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error));
 
@@ -66,7 +66,7 @@ namespace TestWinFormsApp
             {
                 if (InstantReplayCamera.SaveGif() is { } bytes)
                 {
-                    var directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Techsola.InstantReplay");
+                    var directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Instrumental.InstantReplay");
 
                     Directory.CreateDirectory(directoryPath);
 

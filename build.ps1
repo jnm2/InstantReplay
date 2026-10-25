@@ -35,13 +35,13 @@ if ($LastExitCode) { exit 1 }
 if ($SigningCertThumbprint) {
     . build\SignTool.ps1
     SignTool $SigningCertThumbprint $TimestampServer (
-        Get-ChildItem src\Techsola.InstantReplay\bin\$configuration -Recurse -Include Techsola.InstantReplay.dll)
+        Get-ChildItem src\Instrumental.InstantReplay\bin\$configuration -Recurse -Include Instrumental.InstantReplay.dll)
 }
 
 # Pack
 Remove-Item -Recurse -Force $packagesDir -ErrorAction Ignore
 
-dotnet pack src\Techsola.InstantReplay --no-build --output $packagesDir /bl:$logsDir\pack.binlog @dotnetArgs
+dotnet pack src\Instrumental.InstantReplay --no-build --output $packagesDir /bl:$logsDir\pack.binlog @dotnetArgs
 if ($LastExitCode) { exit 1 }
 
 if ($SigningCertThumbprint) {
