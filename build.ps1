@@ -65,3 +65,6 @@ Remove-Item -Recurse -Force $testResultsDir -ErrorAction Ignore
 
 dotnet test --no-build --configuration $configuration --logger trx --results-directory $testResultsDir /bl:"$logsDir\test.binlog"
 if ($LastExitCode) { exit 1 }
+
+& ".\src\Instrumental.InstantReplay.Tests\bin\$configuration\net35\Instrumental.InstantReplay.Tests.exe" "--result=$testResultsDir\net35.xml"
+if ($LastExitCode) { exit 1 }

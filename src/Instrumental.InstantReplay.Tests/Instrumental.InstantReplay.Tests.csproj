@@ -4,8 +4,13 @@
     <TargetFrameworks>net35;net48;net10.0-windows</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnitLite" Version="3.14.0" Condition="'$(TargetFramework)' == 'net35'" />
     <PackageReference Include="NUnit.Analyzers" Version="4.3.0" PrivateAssets="all" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
