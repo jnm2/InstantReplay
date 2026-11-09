@@ -133,10 +133,9 @@ namespace Instrumental.InstantReplay
                             if (!InfoByWindowHandle.TryGetValue(window, out var windowState))
                             {
                                 // The window hasn't been seen before
-                                if (PInvoke.IsWindowVisible(window)
-                                    && new WindowDeviceContextSafeHandle(window, PInvoke.GetDC(window)) is { IsInvalid: false } windowDC)
+                                if (PInvoke.IsWindowVisible(window))
                                 {
-                                    windowState = new(windowDC, firstSeen: now, BufferSize);
+                                    windowState = new(firstSeen: now, BufferSize);
                                     InfoByWindowHandle.Add(window, windowState);
                                 }
                             }
@@ -153,7 +152,7 @@ namespace Instrumental.InstantReplay
                                 }
                                 else if (GetWindowMetricsIfExists(window) is { } metrics)
                                 {
-                                    windowState.AddFrame(bitmapDC, now, metrics, zOrder);
+                                    windowState.AddFrame(bitmapDC, window, now, metrics, zOrder);
                                     zOrder++;
                                 }
                                 else
@@ -172,7 +171,6 @@ namespace Instrumental.InstantReplay
                         {
                             if (entry.Value.LastSeen != now)
                             {
-                                entry.Value.MarkClosed();
                                 entry.Value.DisposeNextFrame(out var allFramesDisposed);
 
                                 if (allFramesDisposed)
