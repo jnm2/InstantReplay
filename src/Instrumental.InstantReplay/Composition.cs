@@ -82,16 +82,16 @@ namespace Instrumental.InstantReplay
             DeviceContext.DangerousAddRef(ref deviceContextNeedsRelease);
             try
             {
+                PInvoke.SetLastError(0); // Make sure a stale error code isn't reported if BitBlt fails without setting one
                 if (!PInvoke.BitBlt((HDC)DeviceContext.DangerousGetHandle(), x, y, width, height, hdcSrc: default, 0, 0, ROP_CODE.BLACKNESS))
                 {
                     var lastError = Marshal.GetLastWin32Error();
-                    if (lastError != 0) throw new Win32Exception(lastError);
-                    needsGdiFlush = true;
+                    throw lastError != 0 ? new Win32Exception(lastError) : new Win32Exception("BitBlt failed.");
                 }
-                else
-                {
-                    needsGdiFlush = false;
-                }
+
+                // Both batched and non-batched calls return TRUE, so GdiFlush must always be called just in case.
+                // (https://learn.microsoft.com/windows/win32/api/wingdi/nf-wingdi-gdisetbatchlimit#remarks)
+                needsGdiFlush = true;
             }
             finally
             {

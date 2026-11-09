@@ -20,7 +20,7 @@ namespace Instrumental.InstantReplay
             public CompositionRenderer((long Timestamp, (int X, int Y, HCURSOR Handle)? Cursor)[] frames, List<Frame?[]> framesByWindow)
             {
                 this.frames = frames;
-                this.framesByWindow = framesByWindow;
+                this.framesByWindow = AlignByTimestamp(frames, framesByWindow);
 
                 var minLeft = int.MaxValue;
                 var maxRight = int.MinValue;
@@ -28,7 +28,7 @@ namespace Instrumental.InstantReplay
                 var maxBottom = int.MinValue;
                 var maxFrameCount = 0u;
 
-                foreach (var frameList in framesByWindow)
+                foreach (var frameList in this.framesByWindow)
                 {
                     for (var i = 0u; i < frameList.Length; i++)
                     {
@@ -60,6 +60,39 @@ namespace Instrumental.InstantReplay
                 }
 
                 cursorRenderer = new();
+            }
+
+            /// <summary>
+            /// Returns frame lists that are each the same length as <paramref name="frames"/>, where each window frame
+            /// is placed at the same index as the timer tick during which it was captured. Window frames that do not
+            /// correspond to any of the given timer ticks, such as frames whose capture failed, are left out. This
+            /// keeps windows in sync with each other and with the cursor even if a window misses adding a frame
+            /// during some timer tick.
+            /// </summary>
+            private static List<Frame?[]> AlignByTimestamp(
+                (long Timestamp, (int X, int Y, HCURSOR Handle)? Cursor)[] frames,
+                List<Frame?[]> framesByWindow)
+            {
+                var indexByTimestamp = new Dictionary<long, int>(frames.Length);
+                for (var i = 0; i < frames.Length; i++)
+                    indexByTimestamp[frames[i].Timestamp] = i;
+
+                var aligned = new List<Frame?[]>(framesByWindow.Count);
+
+                foreach (var frameList in framesByWindow)
+                {
+                    var alignedFrameList = new Frame?[frames.Length];
+
+                    foreach (var frame in frameList)
+                    {
+                        if (frame?.Timestamp is { } timestamp && indexByTimestamp.TryGetValue(timestamp, out var index))
+                            alignedFrameList[index] = frame;
+                    }
+
+                    aligned.Add(alignedFrameList);
+                }
+
+                return aligned;
             }
 
             public void Compose(

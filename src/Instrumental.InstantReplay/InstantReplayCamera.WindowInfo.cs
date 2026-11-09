@@ -1,5 +1,6 @@
 using System;
 using Instrumental.InstantReplay.Native;
+using Windows.Win32.Foundation;
 
 namespace Instrumental.InstantReplay
 {
@@ -7,16 +8,14 @@ namespace Instrumental.InstantReplay
     {
         private sealed class WindowState : IDisposable
         {
-            private WindowDeviceContextSafeHandle? windowDC;
             private readonly CircularBuffer<Frame?> frames;
             private int disposedFrameCount;
 
             public long FirstSeen { get; }
             public long LastSeen { get; set; }
 
-            public WindowState(WindowDeviceContextSafeHandle windowDC, long firstSeen, int bufferSize)
+            public WindowState(long firstSeen, int bufferSize)
             {
-                this.windowDC = windowDC;
                 FirstSeen = firstSeen;
                 LastSeen = firstSeen;
                 frames = new(bufferSize);
@@ -26,32 +25,22 @@ namespace Instrumental.InstantReplay
             {
                 foreach (var frame in frames.GetRawBuffer())
                     frame?.Dispose();
-
-                windowDC?.Dispose();
             }
 
             public void AddFrame(
                 DeleteDCSafeHandle bitmapDC,
+                HWND window,
+                long timestamp,
                 WindowMetrics windowMetrics,
-                uint zOrder,
-                ref bool needsGdiFlush)
+                uint zOrder)
             {
-                if (windowDC is null) throw new InvalidOperationException("The window is closed.");
-
                 var frame = frames.GetNextRef() ??= new();
-                frame.Overwrite(bitmapDC, ref windowDC, windowMetrics, zOrder, ref needsGdiFlush);
+                frame.Overwrite(bitmapDC, window, timestamp, windowMetrics, zOrder);
             }
 
             public void AddInvisibleFrame()
             {
                 frames.GetNextRef()?.SetInvisible();
-            }
-
-            public void MarkClosed()
-            {
-                if (windowDC is null) return;
-                windowDC.Dispose();
-                windowDC = null;
             }
 
             public void DisposeNextFrame(out bool allFramesDisposed)

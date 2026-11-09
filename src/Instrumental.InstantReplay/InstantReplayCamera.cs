@@ -127,17 +127,15 @@ namespace Instrumental.InstantReplay
                                 : null));
 
                         var zOrder = 0u;
-                        var needsGdiFlush = false;
 
                         foreach (var window in currentWindows)
                         {
                             if (!InfoByWindowHandle.TryGetValue(window, out var windowState))
                             {
                                 // The window hasn't been seen before
-                                if (PInvoke.IsWindowVisible(window)
-                                    && new WindowDeviceContextSafeHandle(window, PInvoke.GetDC(window)) is { IsInvalid: false } windowDC)
+                                if (PInvoke.IsWindowVisible(window))
                                 {
-                                    windowState = new(windowDC, firstSeen: now, BufferSize);
+                                    windowState = new(firstSeen: now, BufferSize);
                                     InfoByWindowHandle.Add(window, windowState);
                                 }
                             }
@@ -154,7 +152,7 @@ namespace Instrumental.InstantReplay
                                 }
                                 else if (GetWindowMetricsIfExists(window) is { } metrics)
                                 {
-                                    windowState.AddFrame(bitmapDC, metrics, zOrder, ref needsGdiFlush);
+                                    windowState.AddFrame(bitmapDC, window, now, metrics, zOrder);
                                     zOrder++;
                                 }
                                 else
@@ -167,18 +165,12 @@ namespace Instrumental.InstantReplay
                             }
                         }
 
-                        // Make sure to flush on the same thread that called the GDI function in case this thread goes away.
-                        // (https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdiflush#remarks)
-                        if (needsGdiFlush && !PInvoke.GdiFlush())
-                            throw new Win32Exception("GdiFlush failed.");
-
                         var closedWindowsWithNoFrames = new List<HWND>();
 
                         foreach (var entry in InfoByWindowHandle)
                         {
                             if (entry.Value.LastSeen != now)
                             {
-                                entry.Value.MarkClosed();
                                 entry.Value.DisposeNextFrame(out var allFramesDisposed);
 
                                 if (allFramesDisposed)
