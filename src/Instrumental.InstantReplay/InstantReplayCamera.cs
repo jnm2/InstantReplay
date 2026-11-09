@@ -127,7 +127,6 @@ namespace Instrumental.InstantReplay
                                 : null));
 
                         var zOrder = 0u;
-                        var needsGdiFlush = false;
 
                         foreach (var window in currentWindows)
                         {
@@ -154,7 +153,7 @@ namespace Instrumental.InstantReplay
                                 }
                                 else if (GetWindowMetricsIfExists(window) is { } metrics)
                                 {
-                                    windowState.AddFrame(bitmapDC, now, metrics, zOrder, ref needsGdiFlush);
+                                    windowState.AddFrame(bitmapDC, now, metrics, zOrder);
                                     zOrder++;
                                 }
                                 else
@@ -166,11 +165,6 @@ namespace Instrumental.InstantReplay
                                 windowState.LastSeen = now; // Keeps the window from being detected as closed
                             }
                         }
-
-                        // Make sure to flush on the same thread that called the GDI function in case this thread goes away.
-                        // (https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdiflush#remarks)
-                        if (needsGdiFlush && !PInvoke.GdiFlush())
-                            throw new Win32Exception("GdiFlush failed.");
 
                         var closedWindowsWithNoFrames = new List<HWND>();
 

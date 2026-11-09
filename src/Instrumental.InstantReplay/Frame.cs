@@ -38,8 +38,7 @@ namespace Instrumental.InstantReplay
                 ref WindowDeviceContextSafeHandle windowDC,
                 long timestamp,
                 WindowMetrics windowMetrics,
-                uint zOrder,
-                ref bool needsGdiFlush)
+                uint zOrder)
             {
                 // This frame object is being reused, so make sure its previous contents can't be matched up with the
                 // new timestamp if anything below fails.
@@ -120,9 +119,11 @@ namespace Instrumental.InstantReplay
                         throw lastError != 0 ? new Win32Exception(lastError) : new Win32Exception("BitBlt failed.");
                     }
 
+                    // Call GdiFlush to find out whether the copy succeeded, so that this frame is skipped if it didn't.
                     // Both batched and non-batched calls return TRUE, so GdiFlush must always be called just in case.
                     // (https://learn.microsoft.com/windows/win32/api/wingdi/nf-wingdi-gdisetbatchlimit#remarks)
-                    needsGdiFlush = true;
+                    if (!PInvoke.GdiFlush())
+                        throw new Win32Exception("GdiFlush failed.");
                 }
 
                 WindowMetrics = windowMetrics;
