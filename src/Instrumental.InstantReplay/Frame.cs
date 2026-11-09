@@ -118,7 +118,10 @@ namespace Instrumental.InstantReplay
                         if (!PInvoke.BitBlt((HDC)bitmapDC.DangerousGetHandle(), 0, 0, windowMetrics.ClientWidth, windowMetrics.ClientHeight, windowDC, 0, 0, ROP_CODE.SRCCOPY))
                         {
                             var lastError = Marshal.GetLastWin32Error();
-                            if ((ERROR)lastError is ERROR.INVALID_WINDOW_HANDLE or ERROR.DC_NOT_FOUND)
+
+                            // If the window is destroyed after GetDC, BitBlt fails with no error code. Windows are
+                            // hidden before they are destroyed, so a window that is no longer visible explains this.
+                            if ((ERROR)lastError is ERROR.INVALID_WINDOW_HANDLE or ERROR.DC_NOT_FOUND || !PInvoke.IsWindowVisible(window))
                             {
                                 // Same as above: the window is going away.
                                 SetInvisible();
@@ -133,7 +136,14 @@ namespace Instrumental.InstantReplay
                         // just in case. This also makes sure the copy is complete before the window DC is released.
                         // (https://learn.microsoft.com/windows/win32/api/wingdi/nf-wingdi-gdisetbatchlimit#remarks)
                         if (!PInvoke.GdiFlush())
-                            throw new Win32Exception("GdiFlush failed.");
+                        {
+                            if (PInvoke.IsWindowVisible(window))
+                                throw new Win32Exception("GdiFlush failed.");
+
+                            // Same as above: the window is going away.
+                            SetInvisible();
+                            return;
+                        }
                     }
                     finally
                     {
