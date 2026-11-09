@@ -20,6 +20,14 @@ namespace Instrumental.InstantReplay
             public WindowMetrics WindowMetrics { get; private set; }
             public uint ZOrder { get; private set; }
 
+            /// <summary>
+            /// The timestamp of the timer tick for which this frame was successfully captured, or <see langword="null"/>
+            /// if the most recent capture attempt did not succeed. Used to align frames from different windows during
+            /// composition so that a missed or failed capture in one window can never shift that window's frames
+            /// relative to other windows' frames.
+            /// </summary>
+            public long? Timestamp { get; private set; }
+
             public void Dispose()
             {
                 bitmap?.Dispose();
@@ -28,10 +36,15 @@ namespace Instrumental.InstantReplay
             public void Overwrite(
                 DeleteDCSafeHandle bitmapDC,
                 ref WindowDeviceContextSafeHandle windowDC,
+                long timestamp,
                 WindowMetrics windowMetrics,
                 uint zOrder,
                 ref bool needsGdiFlush)
             {
+                // This frame object is being reused, so make sure its previous contents can't be matched up with the
+                // new timestamp if anything below fails.
+                Timestamp = null;
+
                 if (windowMetrics.ClientWidth > 0 && windowMetrics.ClientHeight > 0)
                 {
                     if (bitmap is null || bitmapWidth < windowMetrics.ClientWidth || bitmapHeight < windowMetrics.ClientHeight)
@@ -115,6 +128,7 @@ namespace Instrumental.InstantReplay
 
                 WindowMetrics = windowMetrics;
                 ZOrder = zOrder;
+                Timestamp = timestamp;
             }
 
             public void SetInvisible()

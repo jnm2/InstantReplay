@@ -154,7 +154,7 @@ namespace Instrumental.InstantReplay
                                 }
                                 else if (GetWindowMetricsIfExists(window) is { } metrics)
                                 {
-                                    windowState.AddFrame(bitmapDC, metrics, zOrder, ref needsGdiFlush);
+                                    windowState.AddFrame(bitmapDC, now, metrics, zOrder, ref needsGdiFlush);
                                     zOrder++;
                                 }
                                 else

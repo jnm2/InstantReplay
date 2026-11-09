@@ -32,6 +32,7 @@ namespace Instrumental.InstantReplay
 
             public void AddFrame(
                 DeleteDCSafeHandle bitmapDC,
+                long timestamp,
                 WindowMetrics windowMetrics,
                 uint zOrder,
                 ref bool needsGdiFlush)
@@ -39,7 +40,7 @@ namespace Instrumental.InstantReplay
                 if (windowDC is null) throw new InvalidOperationException("The window is closed.");
 
                 var frame = frames.GetNextRef() ??= new();
-                frame.Overwrite(bitmapDC, ref windowDC, windowMetrics, zOrder, ref needsGdiFlush);
+                frame.Overwrite(bitmapDC, ref windowDC, timestamp, windowMetrics, zOrder, ref needsGdiFlush);
             }
 
             public void AddInvisibleFrame()
