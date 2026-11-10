@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <style>
+        html, body { margin: 0; height: 100%; font-family: "Segoe UI", sans-serif; }
+        body { background: #0078D4; color: white; padding: 12px 16px; box-sizing: border-box; }
+        h1 { margin: 0 0 8px; font-size: 22px; }
+        input, button { font: inherit; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <h1>WebView2 content</h1>
+    <p>An HTML page in a WebView2CompositionControl.</p>
+    <input placeholder="Type in WebView2" />
+    <button id="button">Clicked 0 times</button>
+    <script>
+        let clickCount = 0;
+        document.getElementById("button").onclick = event => event.target.textContent = `Clicked ${++clickCount} times`;
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<Project Sdk="Uno.Sdk/6.7.45">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net10.0-desktop</TargetFrameworks>
+    <UnoSingleProject>true</UnoSingleProject>
+    <RootNamespace>UnoSample</RootNamespace>
+    <!-- Instrumental.InstantReplay has no build that matches net10.0-desktop, so its net35 build is used, which works fine. -->
+    <NoWarn>$(NoWarn);NU1702</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(InstantReplayProject)" />
+  </ItemGroup>
+
+</Project>

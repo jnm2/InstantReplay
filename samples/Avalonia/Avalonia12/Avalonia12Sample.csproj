@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- net10.0-windows rather than net10.0 so that the net10.0-windows build of Instrumental.InstantReplay is used. -->
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AvaloniaVersion>12.1.6</AvaloniaVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\AvaloniaSample.cs" Link="AvaloniaSample.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <ProjectReference Include="$(InstantReplayProject)" />
+  </ItemGroup>
+
+</Project>

@@ -68,3 +68,9 @@ if ($LastExitCode) { exit 1 }
 
 & ".\src\Instrumental.InstantReplay.Tests\bin\$configuration\net35\Instrumental.InstantReplay.Tests.exe" "--result=$testResultsDir\net35.xml"
 if ($LastExitCode) { exit 1 }
+
+# Samples
+# Last, because building the samples also builds the library project they reference, which must not affect the signed
+# and packed library build above.
+dotnet build samples\Samples.slnx /bl:$logsDir\samples.binlog @dotnetArgs
+if ($LastExitCode) { exit 1 }

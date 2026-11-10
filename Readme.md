@@ -1,7 +1,5 @@
 # Instrumental.InstantReplay [![Feedz badge](https://img.shields.io/feedz/vpre/jnm2/prerelease/Instrumental.InstantReplay)](https://feedz.io/portal/org/jnm2/repository/prerelease/packages "Feedz (prereleases)") [![Build status badge](https://github.com/jnm2/InstantReplay/workflows/CI/badge.svg)](https://github.com/jnm2/InstantReplay/actions?query=workflow%3ACI "Build status")
 
-[🔬 Currently experimental. More documentation will be added later.]
-
 Produces an animated GIF on demand of the last ten seconds of a Windows desktop app’s user interface. This can be useful to include in error reports or to help understand how an unusual situation came about.
 
 > [!NOTE]
@@ -27,17 +25,25 @@ Produces an animated GIF on demand of the last ten seconds of a Windows desktop 
 
 While other integrations could happen in the future, right now this library only works with Windows desktop applications that have access to native Win32 APIs.
 
+Apps can target .NET Framework 3.5, .NET Framework 4.8+, or .NET 10+, as far as the app model itself supports them.
+
 | App model | Supported |
 | --- | --- |
-| Windows Forms | ✔ |
-| WPF | ✔ |
+| Windows Forms and WPF, including either one hosted in the other (`ElementHost`, `WindowsFormsHost`) | ✔ |
+| Avalonia, standalone or hosted in Windows Forms or WPF | ⚠ Only with a configuration change |
+| Uno Platform, Skia Desktop target (`-desktop`) | ✔ |
+| Blazor Hybrid and other WebView2 content in WPF (`BlazorWebView`, `WebView2CompositionControl`) | ✔ |
+| Blazor Hybrid and other WebView2 content in Windows Forms, and the `WebView2` control in WPF | ❌ |
+| WinUI 3, including XAML Islands, .NET MAUI, and Uno Platform’s Windows App SDK target | ❌ |
 | UWP | ❌ |
 
-To continue fleshing out the list: support currently depends on whether the app is able to [invoke](https://docs.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) native Windows functions such as [`BitBlt`](https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-bitblt) and [`EnumWindows`](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-enumwindows).
+Support depends on two things: whether the app is able to [invoke](https://learn.microsoft.com/dotnet/standard/native-interop/pinvoke) native Windows functions such as [`BitBlt`](https://learn.microsoft.com/windows/win32/api/wingdi/nf-wingdi-bitblt) and [`EnumWindows`](https://learn.microsoft.com/windows/win32/api/winuser/nf-winuser-enumwindows), and whether the app model draws its windows in a way that `BitBlt` can read. WinUI 3 and the `WebView2` control draw with DirectComposition, so their content records as blank. In WPF, use `WebView2CompositionControl` instead of `WebView2`. The WPF `BlazorWebView` already does this starting in .NET 10.
+
+By default, Avalonia’s windows also record as black. To fix this, add `.With(new Win32PlatformOptions { CompositionMode = [Win32CompositionMode.RedirectionSurface] })` to your `AppBuilder`. GPU rendering is kept.
+
+To see InstantReplay recording each supported app model, run the [samples](samples/Readme.md).
 
 ## How to use
-
-[🔬 Currently experimental. Examples and more documentation will be added later.]
 
 ### Set up
 

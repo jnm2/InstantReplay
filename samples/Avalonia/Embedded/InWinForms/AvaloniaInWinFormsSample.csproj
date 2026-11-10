@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net10.0-windows;net48</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- Avalonia 12 requires .NET 8 or later, so the .NET Framework build uses Avalonia 11. -->
+    <AvaloniaVersion>12.1.6</AvaloniaVersion>
+    <AvaloniaVersion Condition="'$(TargetFramework)' == 'net48'">11.3.23</AvaloniaVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\EmbeddedAvalonia.cs" Link="EmbeddedAvalonia.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Win32.Interoperability" Version="$(AvaloniaVersion)" />
+    <ProjectReference Include="$(InstantReplayProject)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Readme.md" />
+    <File Path="Shared/SampleGif.cs" />
+  </Folder>
+  <Folder Name="/Avalonia/">
+    <Project Path="Avalonia/Avalonia11/Avalonia11Sample.csproj" />
+    <Project Path="Avalonia/Avalonia12/Avalonia12Sample.csproj" />
+    <Project Path="Avalonia/Embedded/InWinForms/AvaloniaInWinFormsSample.csproj" />
+    <Project Path="Avalonia/Embedded/InWpf/AvaloniaInWpfSample.csproj" />
+  </Folder>
+  <Folder Name="/Library/">
+    <Project Path="../src/Instrumental.InstantReplay/Instrumental.InstantReplay.csproj" />
+  </Folder>
+  <Project Path="WinForms/WinFormsSample.csproj" />
+  <Project Path="Wpf/WpfSample.csproj" />
+  <Project Path="WinFormsWithWpf/WinFormsWithWpfSample.csproj" />
+  <Project Path="WpfWithWinForms/WpfWithWinFormsSample.csproj" />
+  <Project Path="Uno/UnoSample.csproj" />
+  <Project Path="BlazorHybrid/Wpf/BlazorHybridWpfSample.csproj" />
+  <Project Path="WebView2/Wpf/WebView2WpfSample.csproj" />
+</Solution>

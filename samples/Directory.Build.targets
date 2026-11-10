@@ -1,0 +1,7 @@
+<Project>
+
+  <ItemGroup Condition="'$(IncludeSharedSampleCode)' != 'false'">
+    <Compile Include="$(MSBuildThisFileDirectory)Shared\SampleGif.cs" Link="Shared\SampleGif.cs" />
+  </ItemGroup>
+
+</Project>

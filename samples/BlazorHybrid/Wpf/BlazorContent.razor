@@ -1,0 +1,10 @@
+<h1>Blazor content</h1>
+<p>A Razor component running in a BlazorWebView.</p>
+<input @bind="text" @bind:event="oninput" placeholder="Type in Blazor" />
+<button @onclick="() => clickCount++">Clicked @clickCount times</button>
+<p>@text</p>
+
+@code {
+    private string text = "";
+    private int clickCount;
+}

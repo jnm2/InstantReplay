@@ -1,0 +1,10 @@
+<Project>
+
+  <PropertyGroup>
+    <InstantReplayProject>$(MSBuildThisFileDirectory)..\src\Instrumental.InstantReplay\Instrumental.InstantReplay.csproj</InstantReplayProject>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
