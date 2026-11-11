@@ -10,7 +10,7 @@ namespace Instrumental.InstantReplay
 {
     partial class Camera
     {
-        private sealed class Frame : IDisposable
+        internal sealed class Frame : IDisposable
         {
             public const int BitsPerPixel = 24;
 

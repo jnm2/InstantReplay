@@ -2,7 +2,7 @@ namespace Instrumental.InstantReplay
 {
     partial class Camera
     {
-        private readonly struct WindowMetrics
+        internal readonly struct WindowMetrics
         {
             public readonly int ClientLeft;
             public readonly int ClientTop;
