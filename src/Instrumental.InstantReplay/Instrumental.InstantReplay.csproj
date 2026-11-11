@@ -29,4 +29,8 @@
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.367" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Instrumental.InstantReplay.Tests" Key="002400000480000094000000060200000024000052534131000400000100010085daa126106db372767d057b85b796dc79e42f287227350bbd56b0514a2327b8cc2144026ec2bbd39ef1d119d3caeea56c306afbd2cc0f38d3c8464572709d764c44d76cf2825a2146ca417aaf3dc8b8b20e9e9946f9b5a4bb75e8911a469b8f0c4da9eb3ed765d2f673d53b11b052d8356b1e90ef93ce2973996fd023e0afc0" />
+  </ItemGroup>
+
 </Project>
