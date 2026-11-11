@@ -18,7 +18,7 @@ namespace Instrumental.InstantReplay
         /// <summary>
         /// Call <see cref="PInvoke.GdiFlush"/> before accessing pixels after batchable GDI functions have been called.
         /// </summary>
-        public ColorEnumerable EnumerateRange(UInt16Rectangle rectangle)
+        public PixelEnumerable EnumerateRange(UInt16Rectangle rectangle)
         {
             unsafe
             {

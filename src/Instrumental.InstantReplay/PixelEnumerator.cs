@@ -1,6 +1,6 @@
 namespace Instrumental.InstantReplay
 {
-    internal ref struct ColorEnumerator
+    internal ref struct PixelEnumerator
     {
         private unsafe byte* next;
         private unsafe byte* lineEnd;
@@ -8,7 +8,7 @@ namespace Instrumental.InstantReplay
         private readonly uint stride;
         private readonly uint strideSkip;
 
-        public unsafe ColorEnumerator(byte* start, uint width, uint stride, uint height)
+        public unsafe PixelEnumerator(byte* start, uint width, uint stride, uint height)
         {
             next = start - 3;
             lineEnd = start + (width * 3);
@@ -17,13 +17,13 @@ namespace Instrumental.InstantReplay
             imageEnd = start + (height * stride) - strideSkip;
         }
 
-        public Color Current
+        public Pixel Current
         {
             get
             {
                 unsafe
                 {
-                    return *(Color*)next;
+                    return *(Pixel*)next;
                 }
             }
         }
