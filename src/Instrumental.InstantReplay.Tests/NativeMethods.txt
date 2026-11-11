@@ -1,0 +1,7 @@
+GetCurrentProcess
+GetGuiResources
+GetWindowThreadProcessId
+IDC_ARROW
+IDC_WAIT
+LoadCursor
+SetWindowPos

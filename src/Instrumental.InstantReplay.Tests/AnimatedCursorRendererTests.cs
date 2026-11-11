@@ -1,16 +1,16 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Shouldly;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Instrumental.InstantReplay.Tests
 {
     public static class AnimatedCursorRendererTests
     {
-        private const int IdcArrow = 32512;
-        private const int IdcWait = 32514;
         private const ushort Size = 96;
 
         [Test]
@@ -18,7 +18,7 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var composition = new Composition(Size, Size, CompositionDrawing.BitsPerPixel);
 
-            new AnimatedCursorRenderer().Render(composition.DeviceContext, LoadSystemCursor(IdcArrow), 30, 20, out var changedArea);
+            new AnimatedCursorRenderer().Render(composition.DeviceContext, LoadSystemCursor(TestPInvoke.IDC_ARROW), 30, 20, out var changedArea);
 
             changedArea.IsEmpty.ShouldBeFalse();
             var drawnPixelCount = 0;
@@ -43,7 +43,7 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var composition = new Composition(Size, Size, CompositionDrawing.BitsPerPixel);
             var renderer = new AnimatedCursorRenderer();
-            var cursor = LoadSystemCursor(IdcWait);
+            var cursor = LoadSystemCursor(TestPInvoke.IDC_WAIT);
 
             for (var i = 0; i < 100; i++)
             {
@@ -52,14 +52,11 @@ namespace Instrumental.InstantReplay.Tests
             }
         }
 
-        private static HCURSOR LoadSystemCursor(int id)
+        private static HCURSOR LoadSystemCursor(PCWSTR id)
         {
-            var handle = LoadCursor(IntPtr.Zero, (IntPtr)id);
-            if (handle == IntPtr.Zero) throw new System.ComponentModel.Win32Exception();
-            return (HCURSOR)handle;
+            var cursor = TestPInvoke.LoadCursor(default, id);
+            if (cursor.IsNull) throw new Win32Exception();
+            return cursor;
         }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr LoadCursor(IntPtr hInstance, IntPtr lpCursorName);
     }
 }

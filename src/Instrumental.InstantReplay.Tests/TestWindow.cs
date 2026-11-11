@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Instrumental.InstantReplay.Tests
 {
@@ -54,7 +56,7 @@ namespace Instrumental.InstantReplay.Tests
         public void PlaceAbove(TestWindow other)
         {
             // Placing a window after another puts it below that window, so the other window is placed below this one.
-            if (!SetWindowPos(other.Handle, Handle, 0, 0, 0, 0, SwpNoSize | SwpNoMove | SwpNoActivate))
+            if (!TestPInvoke.SetWindowPos((HWND)other.Handle, (HWND)Handle, 0, 0, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOMOVE | SET_WINDOW_POS_FLAGS.SWP_NOACTIVATE))
                 throw new Win32Exception();
         }
 
@@ -66,12 +68,5 @@ namespace Instrumental.InstantReplay.Tests
                 e.Graphics.FillRectangle(brush, area);
             }
         }
-
-        private const uint SwpNoSize = 0x0001;
-        private const uint SwpNoMove = 0x0002;
-        private const uint SwpNoActivate = 0x0010;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
     }
 }

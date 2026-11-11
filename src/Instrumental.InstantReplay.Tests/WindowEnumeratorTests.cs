@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Shouldly;
+using Windows.Win32;
 using Windows.Win32.Foundation;
 
 namespace Instrumental.InstantReplay.Tests
@@ -43,11 +43,9 @@ namespace Instrumental.InstantReplay.Tests
 
         private static uint GetProcessId(HWND window)
         {
-            _ = GetWindowThreadProcessId(window, out var processId);
+            var processId = default(uint);
+            unsafe { _ = TestPInvoke.GetWindowThreadProcessId(window, &processId); }
             return processId;
         }
-
-        [DllImport("user32.dll")]
-        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
     }
 }
