@@ -128,6 +128,18 @@ namespace Instrumental.InstantReplay
                                 return;
                             }
 
+                            // BitBlt fails with ERROR_INVALID_HANDLE, even though the window is visible and GetDC
+                            // succeeded, when the capturing thread has no display surface to read the window's pixels
+                            // from, such as on a desktop in a non-interactive window station. This is the suspected
+                            // cause of the error in remote management (RMM) sessions. There is nothing to capture, so
+                            // skip this frame and try again on the next tick. The memory DC can't be the invalid
+                            // handle, because SelectObject just succeeded with it.
+                            if ((ERROR)lastError == ERROR.INVALID_HANDLE)
+                            {
+                                SetInvisible();
+                                return;
+                            }
+
                             throw lastError != 0 ? new Win32Exception(lastError) : new Win32Exception("BitBlt failed.");
                         }
 
