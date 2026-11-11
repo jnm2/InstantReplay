@@ -4,7 +4,7 @@ using Windows.Win32.Foundation;
 
 namespace Instrumental.InstantReplay
 {
-    partial class InstantReplayCamera
+    partial class Camera
     {
         private sealed class WindowState : IDisposable
         {

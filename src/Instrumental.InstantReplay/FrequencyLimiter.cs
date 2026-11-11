@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 
 namespace Instrumental.InstantReplay
 {
@@ -9,9 +8,9 @@ namespace Instrumental.InstantReplay
         private readonly long?[] occurrences;
         private int nextIndex;
 
-        public FrequencyLimiter(FrequencyLimit limit)
+        public FrequencyLimiter(FrequencyLimit limit, long timestampFrequency)
         {
-            stopwatchTimestampDuration = (limit.WithinDuration.Ticks / TimeSpan.TicksPerSecond) * Stopwatch.Frequency;
+            stopwatchTimestampDuration = (limit.WithinDuration.Ticks / TimeSpan.TicksPerSecond) * timestampFrequency;
             occurrences = new long?[limit.MaximumCount];
         }
 

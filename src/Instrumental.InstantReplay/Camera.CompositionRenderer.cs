@@ -4,7 +4,7 @@ using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Instrumental.InstantReplay
 {
-    partial class InstantReplayCamera
+    partial class Camera
     {
         private readonly struct CompositionRenderer
         {

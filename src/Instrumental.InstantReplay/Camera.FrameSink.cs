@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Instrumental.InstantReplay
 {
-    partial class InstantReplayCamera
+    partial class Camera
     {
         private struct FrameSink
         {

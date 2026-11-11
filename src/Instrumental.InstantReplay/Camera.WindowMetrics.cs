@@ -1,6 +1,6 @@
 namespace Instrumental.InstantReplay
 {
-    partial class InstantReplayCamera
+    partial class Camera
     {
         private readonly struct WindowMetrics
         {
