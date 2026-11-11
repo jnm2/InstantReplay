@@ -10,7 +10,7 @@ namespace Instrumental.InstantReplay
 {
     partial class Camera
     {
-        private sealed class Frame : IDisposable
+        internal sealed class Frame : IDisposable
         {
             public const int BitsPerPixel = 24;
 
@@ -124,6 +124,18 @@ namespace Instrumental.InstantReplay
                             if ((ERROR)lastError is ERROR.INVALID_WINDOW_HANDLE or ERROR.DC_NOT_FOUND || !PInvoke.IsWindowVisible(window))
                             {
                                 // Same as above: the window is going away.
+                                SetInvisible();
+                                return;
+                            }
+
+                            // BitBlt fails with ERROR_INVALID_HANDLE, even though the window is visible and GetDC
+                            // succeeded, when the capturing thread has no display surface to read the window's pixels
+                            // from, such as on a desktop in a non-interactive window station. This is the suspected
+                            // cause of the error in remote management (RMM) sessions. There is nothing to capture, so
+                            // skip this frame and try again on the next tick. The memory DC can't be the invalid
+                            // handle, because SelectObject just succeeded with it.
+                            if ((ERROR)lastError == ERROR.INVALID_HANDLE)
+                            {
                                 SetInvisible();
                                 return;
                             }

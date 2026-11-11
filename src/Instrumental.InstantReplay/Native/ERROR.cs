@@ -10,6 +10,10 @@ namespace Instrumental.InstantReplay.Native
         /// </summary>
         ACCESS_DENIED = 0x5,
         /// <summary>
+        /// <seealso href="https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-#ERROR_INVALID_HANDLE"/>
+        /// </summary>
+        INVALID_HANDLE = 0x6,
+        /// <summary>
         /// <seealso href="https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-#ERROR_INVALID_PARAMETER"/>
         /// </summary>
         INVALID_PARAMETER = 0x57,
