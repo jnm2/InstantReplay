@@ -7,6 +7,7 @@ using Windows.Win32.System.Threading;
 
 namespace Instrumental.InstantReplay.Tests
 {
+    [HiddenDesktop]
     public static class CameraTests
     {
         private static readonly Color Black = Color.FromArgb(0, 0, 0);

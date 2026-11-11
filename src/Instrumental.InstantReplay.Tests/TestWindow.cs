@@ -19,6 +19,9 @@ namespace Instrumental.InstantReplay.Tests
 
         public TestWindow(Rectangle bounds, Color color)
         {
+            if (!HiddenDesktopAttribute.IsCurrentThreadOnHiddenDesktop)
+                throw new InvalidOperationException("Test windows would appear on screen. Mark the test class with [HiddenDesktop].");
+
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.Manual;
