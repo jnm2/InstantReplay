@@ -1,8 +1,9 @@
 using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Shouldly;
+using Windows.Win32;
+using Windows.Win32.System.Threading;
 
 namespace Instrumental.InstantReplay.Tests
 {
@@ -303,12 +304,6 @@ namespace Instrumental.InstantReplay.Tests
             camera.Camera.SaveGif().ShouldBeNull();
         }
 
-        private static uint GetGdiObjectCount() => GetGuiResources(GetCurrentProcess(), uiFlags: 0);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetCurrentProcess();
-
-        [DllImport("user32.dll")]
-        private static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
+        private static uint GetGdiObjectCount() => TestPInvoke.GetGuiResources(TestPInvoke.GetCurrentProcess(), GET_GUI_RESOURCES_FLAGS.GR_GDIOBJECTS);
     }
 }
