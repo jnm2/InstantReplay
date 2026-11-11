@@ -25,7 +25,7 @@ namespace Instrumental.InstantReplay
         // to help figure out what was going on.
 
         public void Quantize(
-            ColorEnumerable sourceImage,
+            PixelEnumerable sourceImage,
             (byte R, byte G, byte B)[] paletteBuffer,
             out uint paletteLength,
             byte[] indexedImageBuffer,
@@ -44,7 +44,7 @@ namespace Instrumental.InstantReplay
             OutputIndexedPixels(sourceImage, cubes, indexedImageBuffer, out indexedImageLength);
         }
 
-        private void OutputIndexedPixels(ColorEnumerable sourceImage, Box[] cubes, byte[] indexedImageBuffer, out uint indexedImageLength)
+        private void OutputIndexedPixels(PixelEnumerable sourceImage, Box[] cubes, byte[] indexedImageBuffer, out uint indexedImageLength)
         {
             for (var paletteIndex = 0; paletteIndex < cubes.Length; paletteIndex++)
             {
@@ -132,7 +132,7 @@ namespace Instrumental.InstantReplay
             return cubes.ToArray();
         }
 
-        private void InitializeAs3DHistogram(ColorEnumerable sourceImage)
+        private void InitializeAs3DHistogram(PixelEnumerable sourceImage)
         {
             Array.Clear(moments, 0, moments.Length);
 

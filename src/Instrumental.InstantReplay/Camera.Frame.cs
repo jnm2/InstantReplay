@@ -8,7 +8,7 @@ using Windows.Win32.Graphics.Gdi;
 
 namespace Instrumental.InstantReplay
 {
-    public static partial class InstantReplayCamera
+    partial class Camera
     {
         private sealed class Frame : IDisposable
         {

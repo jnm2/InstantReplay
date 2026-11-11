@@ -1,13 +1,13 @@
 namespace Instrumental.InstantReplay
 {
-    internal readonly ref struct ColorEnumerable
+    internal readonly ref struct PixelEnumerable
     {
         private readonly unsafe byte* start;
         private readonly uint width;
         private readonly uint stride;
         private readonly uint height;
 
-        public unsafe ColorEnumerable(byte* start, uint width, uint stride, uint height)
+        public unsafe PixelEnumerable(byte* start, uint width, uint stride, uint height)
         {
             this.start = start;
             this.width = width;
@@ -15,7 +15,7 @@ namespace Instrumental.InstantReplay
             this.height = height;
         }
 
-        public ColorEnumerator GetEnumerator()
+        public PixelEnumerator GetEnumerator()
         {
             unsafe
             {

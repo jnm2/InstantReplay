@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>net35;net48;net10.0-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+
+    <!-- Required so that the strong-named library can grant this assembly InternalsVisibleTo. -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Instrumental.InstantReplay.snk</AssemblyOriginatorKeyFile>
+    <!-- Shouldly isn't strong-name signed. That only matters for strong-name validation, which tests don't need. -->
+    <NoWarn>$(NoWarn);CS8002</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
