@@ -1,7 +1,14 @@
+CloseDesktop
+CreateDesktop
+GENERIC_ACCESS_RIGHTS
 GetCurrentProcess
+GetCurrentThreadId
 GetGuiResources
+GetThreadDesktop
+GetUserObjectInformation
 GetWindowThreadProcessId
 IDC_ARROW
 IDC_WAIT
 LoadCursor
+SetThreadDesktop
 SetWindowPos

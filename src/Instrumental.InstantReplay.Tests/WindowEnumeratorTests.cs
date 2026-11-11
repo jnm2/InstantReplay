@@ -7,6 +7,7 @@ using Windows.Win32.Foundation;
 
 namespace Instrumental.InstantReplay.Tests
 {
+    [HiddenDesktop]
     public static class WindowEnumeratorTests
     {
         [Test]

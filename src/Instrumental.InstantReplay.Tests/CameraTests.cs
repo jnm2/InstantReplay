@@ -7,6 +7,7 @@ using Windows.Win32.System.Threading;
 
 namespace Instrumental.InstantReplay.Tests
 {
+    [HiddenDesktop]
     public static class CameraTests
     {
         private static readonly Color Black = Color.FromArgb(0, 0, 0);
@@ -45,7 +46,6 @@ namespace Instrumental.InstantReplay.Tests
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Blue);
             window.Fill(new Rectangle(10, 10, 20, 15), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
 
@@ -66,7 +66,6 @@ namespace Instrumental.InstantReplay.Tests
             using var camera = new TestCamera();
             using var first = new TestWindow(new Rectangle(300, 300, 40, 30), Red);
             using var second = new TestWindow(new Rectangle(400, 350, 50, 20), Green);
-            TestCamera.AssumeCursorIsOutside(first, second);
 
             camera.TickUntilNewWindowsAreCaptured();
 
@@ -85,7 +84,6 @@ namespace Instrumental.InstantReplay.Tests
             using var camera = new TestCamera();
             using var red = new TestWindow(new Rectangle(300, 300, 60, 60), Red);
             using var green = new TestWindow(new Rectangle(330, 330, 60, 60), Green);
-            TestCamera.AssumeCursorIsOutside(red, green);
 
             green.PlaceAbove(red);
             camera.TickUntilNewWindowsAreCaptured();
@@ -103,7 +101,6 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             window.Hide();
@@ -120,7 +117,6 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             window.Hide();
@@ -144,7 +140,6 @@ namespace Instrumental.InstantReplay.Tests
 
             camera.TickUntilNewWindowsAreCaptured();
             window.Location = new Point(360, 340);
-            TestCamera.AssumeCursorIsOutside(window);
             camera.Tick();
 
             using var gif = camera.SaveGif();
@@ -161,12 +156,10 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 40, 30), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             window.Size = new Size(300, 200);
             window.Fill(Green);
-            TestCamera.AssumeCursorIsOutside(window);
             camera.Tick();
             window.Size = new Size(20, 10);
             window.Fill(Blue);
@@ -193,7 +186,6 @@ namespace Instrumental.InstantReplay.Tests
 
             window.Size = new Size(300, 200);
             window.Fill(Green);
-            TestCamera.AssumeCursorIsOutside(window);
             camera.Tick();
 
             using var gif = camera.SaveGif();
@@ -208,7 +200,6 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             window.Fill(Green);
@@ -235,7 +226,6 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             camera.Tick(20);
@@ -250,7 +240,6 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             camera.Tick(10);
@@ -274,7 +263,6 @@ namespace Instrumental.InstantReplay.Tests
         {
             using var camera = new TestCamera();
             using var window = new TestWindow(new Rectangle(300, 300, 60, 40), Red);
-            TestCamera.AssumeCursorIsOutside(window);
 
             camera.TickUntilNewWindowsAreCaptured();
             window.Dispose();

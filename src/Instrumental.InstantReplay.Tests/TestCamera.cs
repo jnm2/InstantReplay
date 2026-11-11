@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 using NUnit.Framework;
 
 namespace Instrumental.InstantReplay.Tests
@@ -47,21 +45,6 @@ namespace Instrumental.InstantReplay.Tests
             return Camera.SaveGif() is { } bytes
                 ? new RecordedGif(bytes)
                 : throw new AssertionException("SaveGif returned null.");
-        }
-
-        /// <summary>
-        /// The real mouse cursor is drawn into the GIF wherever it is, so this makes a test inconclusive if the cursor
-        /// is over an area whose pixels the test checks.
-        /// </summary>
-        public static void AssumeCursorIsOutside(params TestWindow[] windows)
-        {
-            foreach (var window in windows)
-            {
-                var area = window.ClientBounds;
-                area.Inflate(64, 64);
-                if (area.Contains(Cursor.Position))
-                    Assert.Inconclusive("The mouse cursor is over a test window.");
-            }
         }
     }
 }
